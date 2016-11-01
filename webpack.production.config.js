@@ -13,13 +13,13 @@ const dllReferencePlugins = dlls
   .map(dll =>
     new webpack.DllReferencePlugin({
         context: '.',
-        manifest: require(`./dist/vendor/${dll}-manifest.json`),
+        manifest: require(`./dist/vendor/${dll.split('.')[0]}-manifest.json`),
     })
   );
 
 module.exports = {
   plugins: dllReferencePlugins.concat([
-    new ExtractTextPlugin('app.css'),
+    new ExtractTextPlugin('app.[hash].css'),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
@@ -71,6 +71,6 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'app.js',
+    filename: 'app.[hash].js',
   },
 };

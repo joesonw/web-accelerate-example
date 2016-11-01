@@ -32,7 +32,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist/vendor'),
-    filename: '[name].js',
+    filename: '[name].[hash].js',
     library: '[name]',
   },
 };
