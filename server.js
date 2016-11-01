@@ -2,7 +2,7 @@
 * @Author: Joesonw
 * @Date:   2016-11-01 13:29:00
 * @Last Modified by:   Qiaosen Huang
-* @Last Modified time: 2016-11-01 14:42:24
+* @Last Modified time: 2016-11-01 15:36:10
 */
 
 'use strict';
@@ -31,7 +31,6 @@ app.use(function* () {
                 return; 
             }
         }
-        console.log(file)
         const content = yield cb => fs.readFile(file, cb);
         this.body = content;
         this.type = path.extname(file).slice(1);

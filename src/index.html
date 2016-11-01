@@ -9,5 +9,8 @@
     <div id="container">
       Loading...
     </div>
+    <% for (var vendor of htmlWebpackPlugin.options.vendors) {%>
+      <script type="text/javascript" src="<%= vendor %>" ></script>
+    <% } %>
   </body>
 </html>

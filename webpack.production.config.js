@@ -4,15 +4,28 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+const fs = require('fs');
+const dlls = fs.readdirSync(path.resolve(__dirname, 'dist/vendor/'))
+              .filter(file => path.extname(file) === '.js')
+              .map(file => path.basename(file, '.js'))
+
+const dllReferencePlugins = dlls
+  .map(dll =>
+    new webpack.DllReferencePlugin({
+        context: '.',
+        manifest: require(`./dist/vendor/${dll}-manifest.json`),
+    })
+  );
+
 module.exports = {
-  plugins: [
-    new WebpackCleanupPlugin(),
+  plugins: dllReferencePlugins.concat([
     new ExtractTextPlugin('app.css'),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
       },
     }),
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -21,11 +34,11 @@ module.exports = {
         drop_debugger: true,
       },
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new HtmlWebpackPlugin({
+      vendors: dlls.map(dll => `vendor/${dll}.js`),
       template: path.resolve(__dirname, 'src/index.html'),
     }),
-  ],
+  ]),
   resolve: {
     root: path.resolve(__dirname, 'src'),
     extensions: ['', '.js', '.jsx'],
