@@ -54,7 +54,6 @@ module.exports = {
     ],
   },
   entry: [
-    'babel-polyfill',
     path.resolve(__dirname, 'src/index.jsx'),
   ],
   output: {
